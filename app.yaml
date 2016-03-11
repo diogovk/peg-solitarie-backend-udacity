@@ -3,5 +3,8 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /_ah/spi/.*
+  script: api.api
+
 - url: /.*
   script: hello.app
