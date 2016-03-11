@@ -1,6 +1,30 @@
 # peg-solitarie-backend-udacity
 Project 4 of my udacity course
 
+## The Game
+
+The chosen game is Peg Solitarie [Peg Solitarie](https://en.wikipedia.org/wiki/Peg_solitaire).
+Peg solitaire is a single-player board game involving movement of pegs on a board with holes. 
+The standard game fills the entire board with pegs except for the central hole. The objective is, making valid moves, to empty the entire board except for a solitary peg in the central hole.
+A valid move is to jump a peg orthogonally over an adjacent peg into a hole two positions away and then to remove the jumped peg.
+
+This is what a peg solitarie board looks like:
+   a b c d e f g
+ 1     * * *
+ 2     * * *
+ 3 * * * * * * *
+ 4 * * * o * * *
+ 5 * * * * * * *
+ 6     * * *
+ 7     * * *
+
+\* represents a peg, and o represents a hole.
+
+## The Score
+
+Each removed peg gives 1 point. Ending the game with a peg in the center gives 5 points.
+
+
 ## Dependencies
 
 ```
@@ -21,3 +45,5 @@ After that you'll be able to access your application in http://localhost:8080/
 appcfg.py -A peg-solitarie-backend-udacity -V v1 update .
 ```
 After deploying you can access the application in http://v1.peg-solitarie-backend-udacity.appspot.com/
+
+
