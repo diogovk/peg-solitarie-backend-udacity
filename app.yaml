@@ -1,3 +1,5 @@
+application: peg-solitarie-backend-udacity
+version: 1
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -8,3 +10,7 @@ handlers:
 
 - url: /.*
   script: hello.app
+
+libraries:
+- name: endpoints
+  version: latest
