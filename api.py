@@ -45,7 +45,12 @@ class PegSolitarieAPI(remote.Service):
                       name="new_user",
                       http_method="POST")
     def new_user(self, request):
-        return StringMessage(message="dood")
+        if User.query(User.name == request.username).get():
+            raise endpoints.ConflictException(
+                    "A user with this username already exists")
+        user = User(name=request.username, email=request.email)
+        user.put()
+        return StringMessage(message="User successfully created.")
 
 
 
