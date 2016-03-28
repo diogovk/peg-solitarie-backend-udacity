@@ -16,12 +16,10 @@ class PegSolitarieAPI(remote.Service):
                       http_method='GET')
     def new_game(self, request):
         user = User.query(User.name == request.user).get()
-        if user:
-            game = Game.new_game(user=user.key)
-
-            return game.to_message()
-        else:
+        if not user:
             raise endpoints.NotFoundException("This user doesn't exist")
+        game = Game.new_game(user=user.key)
+        return game.to_message()
 
     @endpoints.method(request_message=RC_GAME_KEY,
                       response_message=GameMessage,
@@ -47,6 +45,20 @@ class PegSolitarieAPI(remote.Service):
         user = User(name=request.username, email=request.email)
         user.put()
         return StringMessage(message="User successfully created.")
+
+    @endpoints.method(request_message=UserMessage,
+                      response_message=GamesMessage,
+                      path="user/games",
+                      name="get_active_games",
+                      http_method="GET")
+    def get_active_games(self, request):
+        """ Get all active games being played by a player """
+        user = User.query(User.name == request.user).get()
+        if not user:
+            raise endpoints.NotFoundException("This user doesn't exist")
+        games = Game.query(Game.user == user.key).filter(
+                    Game.game_over == False)
+        return GamesMessage(games=[ game.to_message() for game in games])
 
 
 api = endpoints.api_server([PegSolitarieAPI])
