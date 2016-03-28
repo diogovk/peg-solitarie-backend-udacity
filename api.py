@@ -1,21 +1,9 @@
 import endpoints
 from protorpc import remote
-from protorpc import messages
-from protorpc import message_types
-from models import User, Game, GameMessage, GameKeyMessage
+from models import User, Game
+from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, RC_GAME_KEY
+from rpc_messages import StringMessage, UserMessage, NewUserMessage
 
-RC_GAME_KEY = endpoints.ResourceContainer(
-        game_key=messages.StringField(1))
-
-class StringMessage(messages.Message):
-    message = messages.StringField(1, required=True)
-
-class UserMessage(messages.Message):
-    user = messages.StringField(1, required=True)
-
-class NewUserMessage(messages.Message):
-    username = messages.StringField(1, required=True)
-    email = messages.StringField(2, required=True)
 
 @endpoints.api(name='peg_solitarie', version='v1')
 class PegSolitarieAPI(remote.Service):
@@ -27,7 +15,7 @@ class PegSolitarieAPI(remote.Service):
                       name="new_game",
                       http_method='GET')
     def new_game(self, request):
-        user = User.query(User.name==request.user).get()
+        user = User.query(User.name == request.user).get()
         if user:
             game = Game.new_game(user=user.key)
 
@@ -62,5 +50,3 @@ class PegSolitarieAPI(remote.Service):
 
 
 api = endpoints.api_server([PegSolitarieAPI])
-
-

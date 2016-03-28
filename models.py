@@ -1,29 +1,20 @@
 from google.appengine.ext import ndb
-from protorpc import messages
+from rpc_messages import GameMessage, GamesMessage, GameKeyMessage
 
-INITIAL_BOARD = [ '  ***  ',
-                  '  ***  ',
-                  '*******',
-                  '***o***',
-                  '*******',
-                  '  ***  ',
-                  '  ***  '
-                ]
+INITIAL_BOARD = ['  ***  ',
+                 '  ***  ',
+                 '*******',
+                 '***o***',
+                 '*******',
+                 '  ***  ',
+                 '  ***  ']
+
 
 class User(ndb.Model):
     """ User profile """
     name = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
 
-class GameMessage(messages.Message):
-    """ Transferable Game State Information """
-    user = messages.StringField(1)
-    board = messages.StringField(2, repeated=True)
-    game_over = messages.BooleanField(3)
-    urlsafe_key = messages.StringField(4)
-
-class GameKeyMessage(messages.Message):
-    game_key = messages.StringField(1, required=True)
 
 class Game(ndb.Model):
     """ Game Object """
@@ -33,7 +24,7 @@ class Game(ndb.Model):
 
     @classmethod
     def new_game(cls, user):
-        game=cls(user=user, board=INITIAL_BOARD)
+        game = cls(user=user, board=INITIAL_BOARD)
         game.put()
         return game
 
@@ -50,4 +41,3 @@ class Game(ndb.Model):
         if game_key.kind() != cls.__name__:
             raise ValueError('Incorrect Kind')
         return game
-
