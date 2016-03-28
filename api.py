@@ -15,6 +15,7 @@ class PegSolitarieAPI(remote.Service):
                       name="new_game",
                       http_method='GET')
     def new_game(self, request):
+        """ Creates a new game """
         user = User.query(User.name == request.user).get()
         if not user:
             raise endpoints.NotFoundException("This user doesn't exist")
@@ -27,6 +28,7 @@ class PegSolitarieAPI(remote.Service):
                       name="get_game",
                       http_method="GET")
     def get_game(self, request):
+        """ Returns the current state of a certain game """
         game = Game.get_from_key(urlsafe_key=request.game_key)
         if game:
             return game.to_message()
@@ -39,6 +41,7 @@ class PegSolitarieAPI(remote.Service):
                       name="new_user",
                       http_method="POST")
     def new_user(self, request):
+        """ Creates a new user. Requires a unique username """
         if User.query(User.name == request.username).get():
             raise endpoints.ConflictException(
                     "A user with this username already exists")
