@@ -37,11 +37,15 @@ class PegSolitarieAPI(remote.Service):
 
     @endpoints.method(request_message=RC_GAME_KEY,
                       response_message=GameMessage,
-                      path="game/{game_key}"
-                      name="get_game"
+                      path="game/{game_key}",
+                      name="get_game",
                       http_method="GET")
     def get_game(self, request):
-        Game.get(key=request.game_key)
+        game = Game.get_from_key(urlsafe_key=request.game_key)
+        if game:
+            return game.to_message()
+        else:
+            raise endpoints.NotFoundException("The game could not be found")
 
     @endpoints.method(request_message=NewUserMessage,
                       response_message=StringMessage,

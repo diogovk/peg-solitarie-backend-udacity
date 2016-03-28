@@ -41,4 +41,13 @@ class Game(ndb.Model):
         return GameMessage(user=self.user.get().name,
                            board=self.board,
                            game_over=self.game_over,
-                           urlsafe_key=self.key.urlsafe)
+                           urlsafe_key=self.key.urlsafe())
+
+    @classmethod
+    def get_from_key(cls, urlsafe_key):
+        game_key = ndb.Key(urlsafe=urlsafe_key)
+        game = game_key.get()
+        if game_key.kind() != cls.__name__:
+            raise ValueError('Incorrect Kind')
+        return game
+
