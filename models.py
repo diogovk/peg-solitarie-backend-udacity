@@ -20,7 +20,10 @@ class GameMessage(messages.Message):
     user = messages.StringField(1)
     board = messages.StringField(2, repeated=True)
     game_over = messages.BooleanField(3)
+    urlsafe_key = messages.StringField(4)
 
+class GameKeyMessage(messages.Message):
+    game_key = messages.StringField(1, required=True)
 
 class Game(ndb.Model):
     """ Game Object """
@@ -37,4 +40,5 @@ class Game(ndb.Model):
     def to_message(self):
         return GameMessage(user=self.user.get().name,
                            board=self.board,
-                           game_over=self.game_over)
+                           game_over=self.game_over,
+                           urlsafe_key=self.key.urlsafe)

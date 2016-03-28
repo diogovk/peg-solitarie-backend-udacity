@@ -2,7 +2,10 @@ import endpoints
 from protorpc import remote
 from protorpc import messages
 from protorpc import message_types
-from models import User, Game, GameMessage
+from models import User, Game, GameMessage, GameKeyMessage
+
+RC_GAME_KEY = endpoints.ResourceContainer(
+        game_key=messages.StringField(1))
 
 class StringMessage(messages.Message):
     message = messages.StringField(1, required=True)
@@ -31,6 +34,14 @@ class PegSolitarieAPI(remote.Service):
             return game.to_message()
         else:
             raise endpoints.NotFoundException("This user doesn't exist")
+
+    @endpoints.method(request_message=RC_GAME_KEY,
+                      response_message=GameMessage,
+                      path="game/{game_key}"
+                      name="get_game"
+                      http_method="GET")
+    def get_game(self, request):
+        Game.get(key=request.game_key)
 
     @endpoints.method(request_message=NewUserMessage,
                       response_message=StringMessage,
