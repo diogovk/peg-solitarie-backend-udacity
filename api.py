@@ -61,7 +61,22 @@ class PegSolitarieAPI(remote.Service):
             raise endpoints.NotFoundException("This user doesn't exist")
         games = Game.query(Game.user == user.key).filter(
                     Game.game_over == False)
-        return GamesMessage(games=[ game.to_message() for game in games])
+        return GamesMessage(games=[game.to_message() for game in games])
 
+    @endpoints.method(request_message=RC_GAME_KEY,
+                      response_message=StringMessage,
+                      path="game/{game_key}",
+                      name="cancel_game",
+                      http_method="DELETE")
+    def cancel_game(self, request):
+        """ Delete a non-ended game """
+        game = Game.get_from_key(urlsafe_key=request.game_key)
+        if not game:
+            raise endpoints.NotFoundException("The game could not be found")
+        if game.game_over:
+            raise endpoints.BadRequestException("The game is already over!")
+        else:
+            game.key.delete()
+            return StringMessage(message="Game successfully canceled.")
 
 api = endpoints.api_server([PegSolitarieAPI])
