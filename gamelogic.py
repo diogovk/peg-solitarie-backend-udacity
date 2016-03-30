@@ -10,7 +10,6 @@ class InvalidMoveExpection(Exception):
 def move(current_state, move):
     """
     Moves a peg if a valid move is passed, returning the new game state.
-    Throws InvalidMoveExpection otherwize
     """
     origin_peg_x = letter_to_index(move[0][0])
     # we subtract 1 since externally indexes start at 1 instead of 0
@@ -28,18 +27,23 @@ def move(current_state, move):
 
 
 def letter_to_index(letter):
-    ''' Changes 'a'..'g' into '0..6' '''
+    """ Changes 'a'..'g' into '0..6' """
     letter = letter.lower()
     # 97 is 'a' in ascii table
     return ord(letter)-97
 
 
 def in_bounds(position_x, position_y):
+    """ Check if point is within borders of the BOARD """
     return (position_x >= 0 and position_x < BOARD_SIZE and
             position_y >= 0 and position_y < BOARD_SIZE)
 
 
 def peg_destination(origin_x, origin_y, direction):
+    """
+    Calculate the destination position when jumping from a point in a
+    certain direction
+    """
     dict_move = {"u": (0, -2),  # up
                  "d": (0, +2),  # down
                  "l": (-2, 0),  # left
