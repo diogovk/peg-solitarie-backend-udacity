@@ -2,6 +2,13 @@
 BOARD_SIZE = 7
 VALID_DIRECTIONS = ['u', 'd', 'l', 'r', 'up', 'down', 'left', 'right']
 
+INITIAL_BOARD = ['  ***  ',
+                 '  ***  ',
+                 '*******',
+                 '***o***',
+                 '*******',
+                 '  ***  ',
+                 '  ***  ']
 
 class InvalidMoveExpection(Exception):
     pass

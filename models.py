@@ -1,13 +1,7 @@
 from google.appengine.ext import ndb
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage
+from gamelogic import INITIAL_BOARD
 
-INITIAL_BOARD = ['  ***  ',
-                 '  ***  ',
-                 '*******',
-                 '***o***',
-                 '*******',
-                 '  ***  ',
-                 '  ***  ']
 
 
 class User(ndb.Model):

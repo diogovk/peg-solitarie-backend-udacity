@@ -2,7 +2,14 @@
 
 import unittest
 from gamelogic import letter_to_index, in_bounds, move, InvalidMoveExpection
-from gamelogic import peg_destination
+from gamelogic import peg_destination, INITIAL_BOARD
+from rpc_messages import GameMessage
+
+# Initial game state
+GAME_STATE=GameMessage(user="fakeuser",
+                       board=INITIAL_BOARD,
+                       game_over=False,
+                       urlsafe_key="fake_key")
 
 
 class TestLogic(unittest.TestCase):
@@ -18,23 +25,23 @@ class TestLogic(unittest.TestCase):
 
     def test_origin_peg_in_bounds(self):
         with self.assertRaises(InvalidMoveExpection):
-            move(None, ("h1", "down"))
+            move(GAME_STATE, ("h1", "down"))
         with self.assertRaises(InvalidMoveExpection):
-            move(None, ("a8", "up"))
-        move(None, ("c3", "down"))
+            move(GAME_STATE, ("a8", "up"))
+        move(GAME_STATE, ("c3", "down"))
 
     def test_dest_peg_in_bounds(self):
         with self.assertRaises(InvalidMoveExpection):
-            move(None, ("f4", "right"))
+            move(GAME_STATE, ("f4", "right"))
         with self.assertRaises(InvalidMoveExpection):
-            move(None, ("b4", "left"))
-        move(None, ("d6", "up"))
+            move(GAME_STATE, ("b4", "left"))
+        move(GAME_STATE, ("d6", "up"))
 
     def test_wrong_direction(self):
         with self.assertRaises(ValueError):
-            move(None, ("a1", "north"))
+            move(GAME_STATE, ("a1", "north"))
         with self.assertRaises(ValueError):
-            move(None, ("a1", "k"))
+            move(GAME_STATE, ("a1", "k"))
 
     def test_peg_destination(self):
         self.assertEqual((3, 3), peg_destination(3, 5, "u"))
