@@ -5,6 +5,17 @@ RC_GAME_KEY = endpoints.ResourceContainer(
         game_key=messages.StringField(1))
 
 
+class MoveMessage(messages.Message):
+    """ Form used to make a Move request in a game. """
+    origin_point = messages.StringField(1)
+    direction = messages.StringField(2)
+
+
+RC_MAKE_MOVE = endpoints.ResourceContainer(
+        MoveMessage,
+        game_key=messages.StringField(1))
+
+
 class GameMessage(messages.Message):
     """ Transferable Game State Information """
     user = messages.StringField(1)

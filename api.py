@@ -2,7 +2,8 @@ import endpoints
 from protorpc import remote
 from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, RC_GAME_KEY
-from rpc_messages import StringMessage, UserMessage, NewUserMessage
+from rpc_messages import StringMessage, UserMessage, NewUserMessage, MoveMessage
+from gamelogic import move
 
 
 @endpoints.api(name='peg_solitarie', version='v1')
@@ -78,5 +79,16 @@ class PegSolitarieAPI(remote.Service):
         else:
             game.key.delete()
             return StringMessage(message="Game successfully canceled.")
+
+    @endpoints.method(request_message=RC_MAKE_MOVE,
+                      response_message=GameMessage,
+                      path="game/{game_key}",
+                      name="make_move",
+                      http_method="PUT")
+    def make_move(self, request):
+        game = Game.get_from_key(urlsafe_key=request.game_key)
+        if not game:
+            raise endpoints.NotFoundException("The game could not be found")
+        return move(request.origin_point, request.direction)
 
 api = endpoints.api_server([PegSolitarieAPI])
