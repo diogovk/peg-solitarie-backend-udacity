@@ -3,7 +3,6 @@ from rpc_messages import GameMessage, GamesMessage, GameKeyMessage
 from gamelogic import INITIAL_BOARD
 
 
-
 class User(ndb.Model):
     """ User profile """
     name = ndb.StringProperty(required=True)
