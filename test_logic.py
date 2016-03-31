@@ -93,5 +93,24 @@ class TestLogic(unittest.TestCase):
                           '  ***  ']
         self.assertEqual(expected_board, new_state.board)
 
+        def test_rest_one(self):
+            board = ['  ooo  ',
+                     '  ooo  ',
+                     'ooooooo',
+                     '*oooooo',
+                     'ooooooo',
+                     '  ooo  ',
+                     '  ooo  ']
+            assertTrue(rest_one(board))
+            board = ['  ooo  ',
+                     '  ooo  ',
+                     'ooooooo',
+                     '**ooooo',
+                     'ooooooo',
+                     '  ooo  ',
+                     '  ooo  ']
+            assertFalse(rest_one(board))
+
+
 if __name__ == '__main__':
     unittest.main()
