@@ -19,8 +19,9 @@ class InvalidMoveExpection(Exception):
 def move(current_state, move):
     """
     Moves a peg if a valid move is passed, returning the new game state.
-    Receives a Game and in case of success changes its fields with the new state.
-    This method doesn't commit, so you must .put() manually if you want to save the new state.
+    Receives a Game object which will be mutated with the new state.
+    This method doesn't commit, so you must .put() manually if you want to
+    save the new state.
     Returns a reference to the game object.
     """
     cur_board = current_state.board[:]

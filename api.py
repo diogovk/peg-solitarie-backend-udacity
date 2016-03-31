@@ -1,9 +1,9 @@
 import endpoints
 from protorpc import remote
 from models import User, Game
-from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, RC_GAME_KEY
-from rpc_messages import StringMessage, UserMessage, NewUserMessage, MoveMessage
-from rpc_messages import RC_MAKE_MOVE
+from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, MoveMessage
+from rpc_messages import StringMessage, UserMessage, NewUserMessage
+from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY
 from gamelogic import move, InvalidMoveExpection
 
 
