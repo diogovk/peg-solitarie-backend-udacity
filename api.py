@@ -3,7 +3,8 @@ from protorpc import remote
 from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, RC_GAME_KEY
 from rpc_messages import StringMessage, UserMessage, NewUserMessage, MoveMessage
-from gamelogic import move
+from rpc_messages import RC_MAKE_MOVE
+from gamelogic import move, InvalidMoveExpection
 
 
 @endpoints.api(name='peg_solitarie', version='v1')
@@ -89,6 +90,10 @@ class PegSolitarieAPI(remote.Service):
         game = Game.get_from_key(urlsafe_key=request.game_key)
         if not game:
             raise endpoints.NotFoundException("The game could not be found")
-        return move(request.origin_point, request.direction)
+        try:
+            response =  move(game.to_message(), (request.origin_point, request.direction))
+        except (ValueError, InvalidMoveExpection) as e:
+            raise endpoints.BadRequestException(e.message)
+        return response
 
 api = endpoints.api_server([PegSolitarieAPI])
