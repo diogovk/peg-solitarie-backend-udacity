@@ -24,6 +24,8 @@ def move(current_state, move):
     save the new state.
     Returns a reference to the game object.
     """
+    if current_state.game_over:
+        raise ValueError("This game is already over")
     cur_board = current_state.board[:]
     # origin validations
     origin_x = letter_to_index(move[0][0])
