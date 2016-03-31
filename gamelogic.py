@@ -115,7 +115,7 @@ def replace_char(string, char, position):
 def rest_one(board):
     peg_count = 0
     for line in board:
-        for cell in board:
+        for cell in line:
             if cell == '*':
                 peg_count += 1
             if peg_count > 1:
