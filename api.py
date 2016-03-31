@@ -91,9 +91,10 @@ class PegSolitarieAPI(remote.Service):
         if not game:
             raise endpoints.NotFoundException("The game could not be found")
         try:
-            response =  move(game.to_message(), (request.origin_point, request.direction))
+            game = move(game, (request.origin_point, request.direction))
+            game.put()
         except (ValueError, InvalidMoveExpection) as e:
             raise endpoints.BadRequestException(e.message)
-        return response
+        return game.to_message()
 
 api = endpoints.api_server([PegSolitarieAPI])

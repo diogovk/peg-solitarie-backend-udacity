@@ -19,6 +19,9 @@ class InvalidMoveExpection(Exception):
 def move(current_state, move):
     """
     Moves a peg if a valid move is passed, returning the new game state.
+    Receives a Game and in case of success changes its fields with the new state.
+    This method doesn't commit, so you must .put() manually if you want to save the new state.
+    Returns a reference to the game object.
     """
     cur_board = current_state.board[:]
     # origin validations
@@ -65,11 +68,8 @@ def move(current_state, move):
     cur_board[origin_y] = replace_char(cur_board[origin_y], "o", origin_x)
     cur_board[dest[1]] = replace_char(cur_board[dest[1]], "*", dest[0])
     cur_board[jump[1]] = replace_char(cur_board[jump[1]], "o", jump[0])
-    return GameMessage(user=current_state.user,
-                       board=cur_board,
-                       game_over=current_state.game_over,
-                       urlsafe_key=current_state.urlsafe_key)
-
+    current_state.board = cur_board
+    return current_state
 
 def letter_to_index(letter):
     """ Changes 'a'..'g' into '0..6' """
