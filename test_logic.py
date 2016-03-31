@@ -83,6 +83,15 @@ class TestLogic(unittest.TestCase):
                           '  ***  ',
                           '  ***  ']
         self.assertEqual(expected_board, new_state.board)
+        new_state = move(new_state, ("e4", "left"))
+        expected_board = ['  ***  ',
+                          '  ***  ',
+                          '*******',
+                          '*o*oo**',
+                          '*******',
+                          '  ***  ',
+                          '  ***  ']
+        self.assertEqual(expected_board, new_state.board)
 
 if __name__ == '__main__':
     unittest.main()
