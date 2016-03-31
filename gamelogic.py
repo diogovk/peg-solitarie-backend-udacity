@@ -72,6 +72,7 @@ def make_move(current_state, move):
     cur_board[dest[1]] = replace_char(cur_board[dest[1]], "*", dest[0])
     cur_board[jump[1]] = replace_char(cur_board[jump[1]], "o", jump[0])
     current_state.board = cur_board
+    current_state.history.append("%s:%s" % (move[0], move[1][0]))
     if rest_one(cur_board):
         current_state.game_over = True
     return current_state

@@ -14,10 +14,11 @@ class Game(ndb.Model):
     user = ndb.KeyProperty(required=True)
     board = ndb.PickleProperty(required=True)
     game_over = ndb.BooleanProperty(required=True, default=False)
+    history = ndb.StringProperty(repeated=True)
 
     @classmethod
     def new_game(cls, user):
-        game = cls(user=user, board=INITIAL_BOARD)
+        game = cls(user=user, board=INITIAL_BOARD, history=[])
         game.put()
         return game
 
@@ -25,7 +26,8 @@ class Game(ndb.Model):
         return GameMessage(user=self.user.get().name,
                            board=self.board,
                            game_over=self.game_over,
-                           urlsafe_key=self.key.urlsafe())
+                           urlsafe_key=self.key.urlsafe(),
+                           history=self.history)
 
     @classmethod
     def get_from_key(cls, urlsafe_key):
