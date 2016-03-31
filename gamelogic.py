@@ -30,7 +30,7 @@ def move(current_state, move):
     origin_y = int(move[0][1])-1
     if not in_bounds(origin_x, origin_y):
         raise InvalidMoveExpection("The origin peg is out of bounds")
-    origin_tile = cur_board[origin_x][origin_y]
+    origin_tile = cur_board[origin_y][origin_x]
     if origin_tile == ' ':
         raise InvalidMoveExpection(
                 "The origin of the move is an unusable space( ). "
@@ -48,7 +48,7 @@ def move(current_state, move):
     if not in_bounds(dest[0], dest[1]):
         raise InvalidMoveExpection(
                 "The destination of the move is out of bounds")
-    dest_tile = cur_board[dest[0]][dest[1]]
+    dest_tile = cur_board[dest[1]][dest[0]]
     if dest_tile == ' ':
         raise InvalidMoveExpection(
                 "The destination of the move is an unusable space( ). "
@@ -59,7 +59,7 @@ def move(current_state, move):
                 "In a valid move, the destination should be a hole(o)")
     # Jump validations
     jump = between(origin_x, origin_y, dest[0], dest[1])
-    jump_tile = cur_board[jump[0]][jump[1]]
+    jump_tile = cur_board[jump[1]][jump[0]]
     if jump_tile != "*":
         raise InvalidMoveExpection(
                 'The "jump" position does not have a peg(*). '
