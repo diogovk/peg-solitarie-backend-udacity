@@ -4,7 +4,7 @@ from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, MoveMessage
 from rpc_messages import StringMessage, UserMessage, NewUserMessage
 from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY
-from gamelogic import move, InvalidMoveExpection
+import gamelogic
 
 
 @endpoints.api(name='peg_solitarie', version='v1')
@@ -91,9 +91,10 @@ class PegSolitarieAPI(remote.Service):
         if not game:
             raise endpoints.NotFoundException("The game could not be found")
         try:
-            game = move(game, (request.origin_point, request.direction))
+            game = gamelogic.make_move(
+                    game, (request.origin_point, request.direction))
             game.put()
-        except (ValueError, InvalidMoveExpection) as e:
+        except (ValueError, gamelogic.InvalidMoveExpection) as e:
             raise endpoints.BadRequestException(e.message)
         return game.to_message()
 

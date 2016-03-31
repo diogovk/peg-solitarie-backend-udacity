@@ -16,7 +16,7 @@ class InvalidMoveExpection(Exception):
     pass
 
 
-def move(current_state, move):
+def make_move(current_state, move):
     """
     Moves a peg if a valid move is passed, returning the new game state.
     Receives a Game object which will be mutated with the new state.
