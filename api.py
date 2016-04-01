@@ -87,6 +87,7 @@ class PegSolitarieAPI(remote.Service):
                       name="make_move",
                       http_method="PUT")
     def make_move(self, request):
+        """ Make move in the game, returning the new game """
         game = Game.get_from_key(urlsafe_key=request.game_key)
         if not game:
             raise endpoints.NotFoundException("The game could not be found")
