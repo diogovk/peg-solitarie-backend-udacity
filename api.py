@@ -54,9 +54,9 @@ class PegSolitarieAPI(remote.Service):
     @endpoints.method(request_message=UserMessage,
                       response_message=GamesMessage,
                       path="user/games",
-                      name="get_active_games",
+                      name="get_user_games",
                       http_method="GET")
-    def get_active_games(self, request):
+    def get_user_games(self, request):
         """ Get all active games being played by a player """
         user = User.query(User.name == request.user).get()
         if not user:
@@ -119,6 +119,16 @@ class PegSolitarieAPI(remote.Service):
         game.put()
         update_high_score(game)
         return StringMessage(message="Game ended. Score: %s." % game.score)
+
+    @endpoints.method(request_message=NumberOfResultsMessage,
+                      response_message=LeaderboardMessage,
+                      path="user",
+                      name="get_high_scores"
+                      http_method="GET")
+    def get_high_scores(self, request):
+        """ Gets a Leaderboard. The users with the higher scores recorded """
+        User.query().order(-User.high_score)
+
 
     def update_high_score(game):
         user = game.user.get()

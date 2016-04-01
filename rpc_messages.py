@@ -4,6 +4,15 @@ from protorpc import messages
 RC_GAME_KEY = endpoints.ResourceContainer(
         game_key=messages.StringField(1))
 
+class LeaderboardMessage(messages.Message):
+    """ A group of Score Messages representing a Leaderboard """
+    leaderboard = messages.MessageField(1, ScoreMessage, repeated=True)
+
+class ScoreMessage(messages.Message):
+    """ Message with username and an associated Score """
+    username = messages.StringField(1, required=True)
+    score = messages.IntegerField(2, required=True)
+
 
 class MoveMessage(messages.Message):
     """ Form used to make a Move request in a game. """
