@@ -111,6 +111,19 @@ class TestLogic(unittest.TestCase):
                      '  ooo  ']
             assertFalse(rest_one(board))
 
+    def test_game_solution(self):
+        solution = ["b4:r", "c6:u", "a5:r", "a3:d", "c4:d", "c7:u", "d5:l",
+                    "a5:r", "f5:l", "c5:r", "d7:u", "d5:r", "e7:u", "f5:l",
+                    "f3:d", "g5:l", "g3:d", "d5:r", "g5:l", "d3:r", "e5:u",
+                    "f3:l", "e1:d", "d3:r", "b3:r", "c1:d", "c3:r", "d1:d",
+                    "d4:u", "f3:l", "d2:d"]
+        game = self.GAME_STATE
+        self.assertFalse(game.game_over)
+        for move in solution:
+            origin = move.split(":")[0]
+            direction = move.split(":")[1]
+            game = make_move(game, (origin, direction))
+        self.assertTrue(game.game_over)
 
 if __name__ == '__main__':
     unittest.main()
