@@ -11,7 +11,8 @@ INITIAL_BOARD = ['  ***  ',
                  '  ***  ',
                  '  ***  ']
 
-INITIAL_PEG_COUNT=32
+INITIAL_PEG_COUNT = 32
+
 
 class InvalidMoveExpection(Exception):
     pass
@@ -128,6 +129,7 @@ def rest_one(board):
             if peg_count > 1:
                 return False
     return True
+
 
 def calculate_score(board):
     '''
