@@ -99,4 +99,22 @@ class PegSolitarieAPI(remote.Service):
             raise endpoints.BadRequestException(e.message)
         return game.to_message()
 
+    @endpoints.method(request_message=RC_GAME_KEY,
+                      response_message=StringMessage,
+                      path="give_up/{game_key}",
+                      name="give_up",
+                      http_method="PUT")
+    def give_up(self, request):
+        """
+        Gives up a game. The game will be ended and scores will be calculated.
+        """
+        game = Game.get_from_key(urlsafe_key=request.game_key)
+        if not game:
+            raise endpoints.NotFoundException("The game could not be found")
+        if game.game_over:
+            raise endpoints.BadRequestException("The game is already over")
+        end_game(game)
+        game.put()
+        return StringMessage(message="Game ended. Score: %s" % game.score)
+
 api = endpoints.api_server([PegSolitarieAPI])
