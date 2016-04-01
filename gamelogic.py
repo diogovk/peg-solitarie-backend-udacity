@@ -11,6 +11,7 @@ INITIAL_BOARD = ['  ***  ',
                  '  ***  ',
                  '  ***  ']
 
+INITIAL_PEG_COUNT=32
 
 class InvalidMoveExpection(Exception):
     pass
@@ -122,3 +123,18 @@ def rest_one(board):
             if peg_count > 1:
                 return False
     return True
+
+def calculate_score(board):
+    '''
+    Calculates the game score based on the board.
+    '''
+    peg_count = 0
+    for line in board:
+        for cell in line:
+            if cell == '*':
+                peg_count += 1
+    score = INITIAL_PEG_COUNT - peg_count
+    center_cell = board[3][3]
+    if center_cell == '*':
+        score += 5
+    return score

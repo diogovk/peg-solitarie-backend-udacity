@@ -1,8 +1,9 @@
 #!/usr/bin/python2
 
 import unittest
-from gamelogic import letter_to_index, in_bounds, make_move
+from gamelogic import letter_to_index, in_bounds, make_move, calculate_score
 from gamelogic import peg_destination, INITIAL_BOARD, InvalidMoveExpection
+from gamelogic import rest_one
 from rpc_messages import GameMessage
 from models import Game, User
 
@@ -93,23 +94,26 @@ class TestLogic(unittest.TestCase):
                           '  ***  ']
         self.assertEqual(expected_board, new_state.board)
 
-        def test_rest_one(self):
-            board = ['  ooo  ',
-                     '  ooo  ',
-                     'ooooooo',
-                     '*oooooo',
-                     'ooooooo',
-                     '  ooo  ',
-                     '  ooo  ']
-            assertTrue(rest_one(board))
-            board = ['  ooo  ',
-                     '  ooo  ',
-                     'ooooooo',
-                     '**ooooo',
-                     'ooooooo',
-                     '  ooo  ',
-                     '  ooo  ']
-            assertFalse(rest_one(board))
+    def test_rest_one(self):
+        board = ['  ooo  ',
+                 '  ooo  ',
+                 'ooooooo',
+                 '*oooooo',
+                 'ooooooo',
+                 '  ooo  ',
+                 '  ooo  ']
+        self.assertTrue(rest_one(board))
+        board = ['  ooo  ',
+                 '  ooo  ',
+                 'ooooooo',
+                 '**ooooo',
+                 'ooooooo',
+                 '  ooo  ',
+                 '  ooo  ']
+        self.assertFalse(rest_one(board))
+
+    def test_empty_score(self):
+        self.assertEqual(0, calculate_score(self.GAME_STATE.board))
 
     def test_game_solution(self):
         solution = ["b4:r", "c6:u", "a5:r", "a3:d", "c4:d", "c7:u", "d5:l",
@@ -124,6 +128,7 @@ class TestLogic(unittest.TestCase):
             direction = move.split(":")[1]
             game = make_move(game, (origin, direction))
         self.assertTrue(game.game_over)
+        self.assertEqual(36, calculate_score(game.board))
 
 if __name__ == '__main__':
     unittest.main()
