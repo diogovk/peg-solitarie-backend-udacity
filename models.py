@@ -15,6 +15,7 @@ class Game(ndb.Model):
     board = ndb.PickleProperty(required=True)
     game_over = ndb.BooleanProperty(required=True, default=False)
     history = ndb.StringProperty(repeated=True)
+    score = ndb.IntegerProperty()
 
     @classmethod
     def new_game(cls, user):
@@ -27,7 +28,8 @@ class Game(ndb.Model):
                            board=self.board,
                            game_over=self.game_over,
                            urlsafe_key=self.key.urlsafe(),
-                           history=self.history)
+                           history=self.history,
+                           score=self.score)
 
     @classmethod
     def get_from_key(cls, urlsafe_key):

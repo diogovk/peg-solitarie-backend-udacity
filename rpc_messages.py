@@ -23,6 +23,7 @@ class GameMessage(messages.Message):
     game_over = messages.BooleanField(3)
     urlsafe_key = messages.StringField(4)
     history = messages.StringField(5, repeated=True)
+    score = messages.IntegerField(6)
 
 
 class GamesMessage(messages.Message):

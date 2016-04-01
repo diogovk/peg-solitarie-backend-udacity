@@ -129,6 +129,7 @@ class TestLogic(unittest.TestCase):
             game = make_move(game, (origin, direction))
         self.assertTrue(game.game_over)
         self.assertEqual(36, calculate_score(game.board))
+        self.assertEqual(36, game.score)
 
 if __name__ == '__main__':
     unittest.main()

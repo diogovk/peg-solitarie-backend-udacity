@@ -75,8 +75,13 @@ def make_move(current_state, move):
     current_state.board = cur_board
     current_state.history.append("%s:%s" % (move[0], move[1][0]))
     if rest_one(cur_board):
-        current_state.game_over = True
+        end_game(current_state)
     return current_state
+
+
+def end_game(game_state):
+    game_state.game_over = True
+    game_state.score = calculate_score(game_state.board)
 
 
 def letter_to_index(letter):
