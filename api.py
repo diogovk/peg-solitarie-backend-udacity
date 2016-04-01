@@ -97,6 +97,8 @@ class PegSolitarieAPI(remote.Service):
             game.put()
         except (ValueError, gamelogic.InvalidMoveExpection) as e:
             raise endpoints.BadRequestException(e.message)
+        if game.game_over:
+            update_high_score(game)
         return game.to_message()
 
     @endpoints.method(request_message=RC_GAME_KEY,
@@ -115,6 +117,14 @@ class PegSolitarieAPI(remote.Service):
             raise endpoints.BadRequestException("The game is already over")
         end_game(game)
         game.put()
-        return StringMessage(message="Game ended. Score: %s" % game.score)
+        update_high_score(game)
+        return StringMessage(message="Game ended. Score: %s." % game.score)
+
+    def update_high_score(game):
+        user = game.user.get()
+        if game.score > user.high_score:
+            user.high_score = game.score
+            user.put()
+
 
 api = endpoints.api_server([PegSolitarieAPI])

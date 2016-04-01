@@ -7,6 +7,7 @@ class User(ndb.Model):
     """ User profile """
     name = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
+    high_score = ndb.IntegerProperty(default=0)
 
 
 class Game(ndb.Model):
