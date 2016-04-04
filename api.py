@@ -3,8 +3,10 @@ from protorpc import remote
 from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, MoveMessage
 from rpc_messages import StringMessage, UserMessage, NewUserMessage
-from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY
+from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY, NumberOfResultsMessage
+from rpc_messages import LeaderboardMessage
 import gamelogic
+from google.appengine.ext import ndb
 
 
 @endpoints.api(name='peg_solitarie', version='v1')
@@ -94,11 +96,13 @@ class PegSolitarieAPI(remote.Service):
         try:
             game = gamelogic.make_move(
                     game, (request.origin_point, request.direction))
-            game.put()
         except (ValueError, gamelogic.InvalidMoveExpection) as e:
             raise endpoints.BadRequestException(e.message)
         if game.game_over:
-            update_high_score(game)
+            gamelogic.end_game(game)
+            self.commit_game_end(game)
+        else:
+            game.put()
         return game.to_message()
 
     @endpoints.method(request_message=RC_GAME_KEY,
@@ -115,26 +119,32 @@ class PegSolitarieAPI(remote.Service):
             raise endpoints.NotFoundException("The game could not be found")
         if game.game_over:
             raise endpoints.BadRequestException("The game is already over")
-        end_game(game)
-        game.put()
-        update_high_score(game)
+        gamelogic.end_game(game)
+        self.commit_game_end(game)
         return StringMessage(message="Game ended. Score: %s." % game.score)
 
     @endpoints.method(request_message=NumberOfResultsMessage,
                       response_message=LeaderboardMessage,
                       path="user",
-                      name="get_high_scores"
+                      name="get_high_scores",
                       http_method="GET")
     def get_high_scores(self, request):
         """ Gets a Leaderboard. The users with the higher scores recorded """
-        User.query().order(-User.high_score)
+        users = User.query().order(-User.high_score)
+        return LeaderboardMessage(leaderboard=[ u.to_scoremessage() for u in users])
 
-
-    def update_high_score(game):
+    @ndb.transactional(xg=True)
+    def commit_game_end(self, game):
+        """
+        End game and update high score in a transaction.
+        A game score should not be commited if the high score isn't updated.
+        This method is indenpotent which means it's safe to execute
+        in an already ended game.
+        """
         user = game.user.get()
-        if game.score > user.high_score:
-            user.high_score = game.score
-            user.put()
+        user.update_high_score(game)
+        user.put()
+        game.put()
 
 
 api = endpoints.api_server([PegSolitarieAPI])

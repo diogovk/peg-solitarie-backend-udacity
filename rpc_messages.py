@@ -4,14 +4,21 @@ from protorpc import messages
 RC_GAME_KEY = endpoints.ResourceContainer(
         game_key=messages.StringField(1))
 
-class LeaderboardMessage(messages.Message):
-    """ A group of Score Messages representing a Leaderboard """
-    leaderboard = messages.MessageField(1, ScoreMessage, repeated=True)
+
+class NumberOfResultsMessage(messages.Message):
+    """ In a consult, tell how many entries to fetch """
+    number_of_results = messages.IntegerField(1)
+
 
 class ScoreMessage(messages.Message):
     """ Message with username and an associated Score """
     username = messages.StringField(1, required=True)
-    score = messages.IntegerField(2, required=True)
+    high_score = messages.IntegerField(2, required=True)
+
+
+class LeaderboardMessage(messages.Message):
+    """ A group of Score Messages representing a Leaderboard """
+    leaderboard = messages.MessageField(ScoreMessage, 1, repeated=True)
 
 
 class MoveMessage(messages.Message):

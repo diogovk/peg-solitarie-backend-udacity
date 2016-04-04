@@ -11,7 +11,16 @@ class User(ndb.Model):
     high_score = ndb.IntegerProperty(default=0)
 
     def to_scoremessage(self):
-        return ScoreMessage(username=name, score=high_score)
+        return ScoreMessage(username=self.name,
+                high_score=self.high_score)
+
+    def update_high_score(self, game):
+        """
+        Checks if game's score is higher than the user's high score.
+        If it is, sets the user high_score to game's score
+        """
+        if game.score > self.high_score:
+            self.high_score = game.score
 
 
 class Game(ndb.Model):
