@@ -129,17 +129,16 @@ class PegSolitarieAPI(remote.Service):
                       name="get_high_scores",
                       http_method="GET")
     def get_high_scores(self, request):
-        """ Gets a Leaderboard. The users with the higher scores recorded """
-        users = User.query().order(-User.high_score)
-        return LeaderboardMessage(leaderboard=[ u.to_scoremessage() for u in users])
+        """ Gets a Leaderboard. A list of games with the highest recorded scores. """
+        games = Game.query().order(-Game.score)
+        return LeaderboardMessage(
+                leaderboard=[g.to_scoremessage() for g in games])
 
     @ndb.transactional(xg=True)
     def commit_game_end(self, game):
         """
-        End game and update high score in a transaction.
-        A game score should not be commited if the high score isn't updated.
-        This method is indenpotent which means it's safe to execute
-        in an already ended game.
+        Receives an ended game (including its score) and updates the player's
+        top high score if necessary, commiting both in the database.
         """
         user = game.user.get()
         user.update_high_score(game)

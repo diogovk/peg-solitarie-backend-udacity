@@ -13,7 +13,7 @@ class NumberOfResultsMessage(messages.Message):
 class ScoreMessage(messages.Message):
     """ Message with username and an associated Score """
     username = messages.StringField(1, required=True)
-    high_score = messages.IntegerField(2, required=True)
+    score = messages.IntegerField(2, required=True)
 
 
 class LeaderboardMessage(messages.Message):

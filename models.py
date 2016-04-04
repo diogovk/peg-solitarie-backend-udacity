@@ -11,8 +11,7 @@ class User(ndb.Model):
     high_score = ndb.IntegerProperty(default=0)
 
     def to_scoremessage(self):
-        return ScoreMessage(username=self.name,
-                high_score=self.high_score)
+        return ScoreMessage(username=self.name, score=self.high_score)
 
     def update_high_score(self, game):
         """
@@ -44,6 +43,9 @@ class Game(ndb.Model):
                            urlsafe_key=self.key.urlsafe(),
                            history=self.history,
                            score=self.score)
+
+    def to_scoremessage(self):
+        return ScoreMessage(username=self.user.get().name, score=self.score)
 
     @classmethod
     def get_from_key(cls, urlsafe_key):
