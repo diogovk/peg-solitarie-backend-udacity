@@ -55,3 +55,7 @@ appcfg.py -A peg-solitarie-backend-udacity -V v1 update .
 After deploying you can access the application in http://v1.peg-solitarie-backend-udacity.appspot.com/
 
 
+### Run Game Logic tests
+```
+python2 test_logic.py
+```
