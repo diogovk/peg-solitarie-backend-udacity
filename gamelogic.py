@@ -1,4 +1,5 @@
 from rpc_messages import GameMessage
+from datetime import date
 
 BOARD_SIZE = 7
 VALID_DIRECTIONS = ['u', 'd', 'l', 'r', 'up', 'down', 'left', 'right']
@@ -83,6 +84,7 @@ def make_move(current_state, move):
 def end_game(game_state):
     game_state.game_over = True
     game_state.score = calculate_score(game_state.board)
+    game_state.ended_at = date.today()
 
 
 def letter_to_index(letter):

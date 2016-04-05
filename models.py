@@ -11,7 +11,7 @@ class User(ndb.Model):
     high_score = ndb.IntegerProperty(default=0)
 
     def to_scoremessage(self):
-        return ScoreMessage(username=self.name, score=self.high_score)
+        return UserHighScore(username=self.name, high_score=self.high_score)
 
     def update_high_score(self, game):
         """
@@ -29,6 +29,7 @@ class Game(ndb.Model):
     game_over = ndb.BooleanProperty(required=True, default=False)
     history = ndb.StringProperty(repeated=True)
     score = ndb.IntegerProperty()
+    ended_at = ndb.DateProperty()
 
     @classmethod
     def new_game(cls, user):
@@ -45,7 +46,9 @@ class Game(ndb.Model):
                            score=self.score)
 
     def to_scoremessage(self):
-        return ScoreMessage(username=self.user.get().name, score=self.score)
+        return ScoreMessage(username=self.user.get().name,
+                            score=self.score,
+                            date=str(self.ended_at))
 
     @classmethod
     def get_from_key(cls, urlsafe_key):

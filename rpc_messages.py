@@ -10,10 +10,17 @@ class NumberOfResultsMessage(messages.Message):
     number_of_results = messages.IntegerField(1)
 
 
+class UserHighScore(messages.Message):
+    """ A ranking entry, which is a user and it's highest score """
+    username = messages.StringField(1, required=True)
+    high_score = messages.IntegerField(2, required=True)
+
+
 class ScoreMessage(messages.Message):
-    """ Message with username and an associated Score """
+    """ Message representing a game result """
     username = messages.StringField(1, required=True)
     score = messages.IntegerField(2, required=True)
+    date = messages.StringField(3, required=True)
 
 
 class LeaderboardMessage(messages.Message):
