@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage
-from rpc_messages import ScoreMessage
+from rpc_messages import ScoreMessage, UserHighScore
 from gamelogic import INITIAL_BOARD
 
 
@@ -10,7 +10,7 @@ class User(ndb.Model):
     email = ndb.StringProperty(required=True)
     high_score = ndb.IntegerProperty(default=0)
 
-    def to_scoremessage(self):
+    def to_highscoremessage(self):
         return UserHighScore(username=self.name, high_score=self.high_score)
 
     def update_high_score(self, game):

@@ -16,6 +16,11 @@ class UserHighScore(messages.Message):
     high_score = messages.IntegerField(2, required=True)
 
 
+class RankingMessage(messages.Message):
+    """ A Ranking of users with the highest scores """
+    ranking = messages.MessageField(UserHighScore, 1, repeated=True)
+
+
 class ScoreMessage(messages.Message):
     """ Message representing a game result """
     username = messages.StringField(1, required=True)

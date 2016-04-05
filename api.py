@@ -1,10 +1,10 @@
 import endpoints
-from protorpc import remote
+from protorpc import remote, message_types
 from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, MoveMessage
 from rpc_messages import StringMessage, UserMessage, NewUserMessage
 from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY, NumberOfResultsMessage
-from rpc_messages import LeaderboardMessage
+from rpc_messages import LeaderboardMessage, RankingMessage
 import gamelogic
 from google.appengine.ext import ndb
 
@@ -135,6 +135,17 @@ class PegSolitarieAPI(remote.Service):
             games = games.fetch(request.number_of_results)
         return LeaderboardMessage(
                 leaderboard=[g.to_scoremessage() for g in games])
+
+    @endpoints.method(request_message=message_types.VoidMessage,
+                      response_message=RankingMessage,
+                      path="user/ranking",
+                      name="get_user_rankings",
+                      http_method="GET")
+    def get_user_rankings(self, request):
+        """ List users with the highest recorded scores """
+        users = User.query().filter(User.high_score > 0).order(-User.high_score)
+        return RankingMessage(
+                ranking=[u.to_highscoremessage() for u in users])
 
     @ndb.transactional(xg=True)
     def commit_game_end(self, game):
