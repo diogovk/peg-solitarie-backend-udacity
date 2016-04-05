@@ -131,6 +131,8 @@ class PegSolitarieAPI(remote.Service):
     def get_high_scores(self, request):
         """ Gets a Leaderboard. A list of games with the highest recorded scores. """
         games = Game.query().filter(Game.score > 0).order(-Game.score)
+        if request.number_of_results:
+            games = games.fetch(request.number_of_results)
         return LeaderboardMessage(
                 leaderboard=[g.to_scoremessage() for g in games])
 
