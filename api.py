@@ -4,7 +4,7 @@ from models import User, Game
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage, MoveMessage
 from rpc_messages import StringMessage, UserMessage, NewUserMessage
 from rpc_messages import RC_MAKE_MOVE, RC_GAME_KEY, NumberOfResultsMessage
-from rpc_messages import LeaderboardMessage, RankingMessage
+from rpc_messages import LeaderboardMessage, RankingMessage, GameHistoryMessage
 import gamelogic
 from google.appengine.ext import ndb
 
@@ -151,6 +151,24 @@ class PegSolitarieAPI(remote.Service):
                  .order(-User.high_score))
         return RankingMessage(
                 ranking=[u.to_highscoremessage() for u in users])
+
+    @endpoints.method(request_message=RC_GAME_KEY,
+                      response_message=GameHistoryMessage,
+                      path="game/{game_key}/history",
+                      name="get_game_history",
+                      http_method="GET")
+    def get_game_history(self, request):
+        """
+        Gets the movement history for a specific game.
+        Each moviement is composed of two fields separated by colon.
+        The first is the origin point in the board.
+        The second is the direction which can be 'u', 'd', 'l', 'r'
+        for 'up', 'down', 'left' and 'right' respectively.
+        """
+        game = Game.get_from_key(urlsafe_key=request.game_key)
+        if not game:
+            raise endpoints.NotFoundException("The game could not be found")
+        return game.to_historymessage()
 
     @ndb.transactional(xg=True)
     def commit_game_end(self, game):

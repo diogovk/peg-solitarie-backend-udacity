@@ -62,6 +62,10 @@ class GameKeyMessage(messages.Message):
     game_key = messages.StringField(1, required=True)
 
 
+class GameHistoryMessage(messages.Message):
+    history = messages.StringField(1, repeated=True)
+
+
 class StringMessage(messages.Message):
     message = messages.StringField(1, required=True)
 

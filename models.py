@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 from rpc_messages import GameMessage, GamesMessage, GameKeyMessage
-from rpc_messages import ScoreMessage, UserHighScore
+from rpc_messages import ScoreMessage, UserHighScore, GameHistoryMessage
 from gamelogic import INITIAL_BOARD
 
 
@@ -49,6 +49,9 @@ class Game(ndb.Model):
         return ScoreMessage(username=self.user.get().name,
                             score=self.score,
                             date=str(self.ended_at))
+
+    def to_historymessage(self):
+        return GameHistoryMessage(history=self.history)
 
     @classmethod
     def get_from_key(cls, urlsafe_key):
