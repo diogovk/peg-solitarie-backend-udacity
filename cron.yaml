@@ -1,0 +1,4 @@
+cron:
+- description: Remind users of "abandoned" games
+  url: /crons/notify_inactive_users
+  schedule: every 1 hours
