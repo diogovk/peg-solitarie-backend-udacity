@@ -5,7 +5,7 @@ import webapp2
 from google.appengine.api import mail, app_identity
 from models import Game
 
-class NotifyInactiveUsers:
+class NotifyInactiveUsers(webapp2.RequestHandler):
     def get(self):
         """
         Sends notification for users which have active games, with no movement
@@ -13,7 +13,7 @@ class NotifyInactiveUsers:
         One notification per game.
         """
         app_id = app_identity.get_application_id()
-        games = Games.query()
+        games = Game.query()
         for game in games:
             user = game.user.get()
             subject = "Please finish your game"
