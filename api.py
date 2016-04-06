@@ -129,7 +129,10 @@ class PegSolitarieAPI(remote.Service):
                       name="get_high_scores",
                       http_method="GET")
     def get_high_scores(self, request):
-        """ Gets a Leaderboard. A list of games with the highest recorded scores. """
+        """
+        Gets a Leaderboard.
+        A list of games with the highest recorded scores.
+        """
         games = Game.query().filter(Game.score > 0).order(-Game.score)
         if request.number_of_results:
             games = games.fetch(request.number_of_results)
@@ -143,7 +146,9 @@ class PegSolitarieAPI(remote.Service):
                       http_method="GET")
     def get_user_rankings(self, request):
         """ List users with the highest recorded scores """
-        users = User.query().filter(User.high_score > 0).order(-User.high_score)
+        users = (User.query()
+                 .filter(User.high_score > 0)
+                 .order(-User.high_score))
         return RankingMessage(
                 ranking=[u.to_highscoremessage() for u in users])
 
