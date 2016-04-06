@@ -125,7 +125,7 @@ class PegSolitarieAPI(remote.Service):
 
     @endpoints.method(request_message=NumberOfResultsMessage,
                       response_message=LeaderboardMessage,
-                      path="user",
+                      path="leaderboard",
                       name="get_high_scores",
                       http_method="GET")
     def get_high_scores(self, request):
