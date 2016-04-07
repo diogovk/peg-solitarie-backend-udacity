@@ -30,6 +30,7 @@ class Game(ndb.Model):
     history = ndb.StringProperty(repeated=True)
     score = ndb.IntegerProperty()
     ended_at = ndb.DateProperty()
+    changed_at = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def new_game(cls, user):
