@@ -1,0 +1,43 @@
+
+# Additional properties for models
+
+In the Game model, due to the nature of the game, only _user_ and _game_over_ properties were kept.
+In Peg solitary the state of the game is mainly the description of pegs and their positions in the board.
+The _board_ property is a list of strings that represent a 7x7 board state.
+Each char in a string can be one of 3 options:
+* - A peg
+o - A hole, where a peg can "land"
+(space) - Part of the board that is unusable
+
+The unusable empty spaces are used in certain edges to give the board the caracteristic shape 
+of the Peg Solitarie game board.
+The _changed_at_ property is used to know when was the last move made by the player. With this informartion
+we can send a mail notification only users which haven't made a move in the last 12 hours.
+The _ended_at_ property is used to show in the leaderborad when a certain high scores was achieved.
+_history_ is a list of strings describing the sequence of moves made to reach the current board state.
+The history is formed by a position in the board which contains a peg, and a letter representing the direction
+in which this peg is "jumping". Those are separeted by colon (:).
+The _score_ property was used, instead of a _Score_ model, since it's natural that in Peg Solitarie each
+game has only one score, which is calculated on completion, and each score is related to a single game.
+
+The only property added to the _User_ model is _high_score_.
+This property will store the highest score a user has ever achieved.
+With this information we are able to create a user ranking, sorted by higher achievers first.
+
+# Game Logic Considerations
+
+There are 3 ways to end a game.
+1) Leaving only one peg in the board.
+2) Cancel the game, deleting it.
+3) "Giving up", which ends the game calculating the score.
+
+It is pretty common that the player will reach to a board where there are more than 1 peg, but there are no more valid moves.
+In this case the user will be obligated to "give up" or "cancel" the game.
+It would be possible for the system to determine if there are still valid moves, and automatically end the game if there are none.
+This would bring convenience to the player, but that would also add more complexity to the game logic.
+In my opinion, determining if there are still valid moves or not is part of the skill of a player, and players missing a valid move before "giving up" should be "punished" in the score.
+
+The horizontal access, is identified by a number from 1 to 7.
+When working with computers, using indexes starting in 0 is convenient, but for a board game, having a index start in 1 is the most usual.
+When working internally, the gamelogic convert 1-start index into 0-index and then works with that.
+
