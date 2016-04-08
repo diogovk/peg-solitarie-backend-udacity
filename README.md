@@ -23,6 +23,7 @@ This is what a peg solitarie board looks like:
 ## The Score
 
 Each removed peg gives 1 point. Ending the game with a peg in the center gives 5 points.
+The maximum achievable score is 36.
 
 
 ## Dependencies
@@ -38,7 +39,7 @@ Google App Engine SDK for Python (google-appengine-python)
 ```
 dev_appserver.py .
 ```
-After that you'll be able to access your application in http://localhost:8080/
+After that you'll be able to access your application in http://localhost:8080/_ah/api/explorer.
 
 ### Exploring the API
 
@@ -48,14 +49,28 @@ chromium  --user-data-dir=test --unsafely-treat-insecure-origin-as-secure=http:/
 ```
 Then access the api explorer with the following URL http://localhost:8080/_ah/api/explorer.
 
+
+
 ### Deploy to Google App engine
 ```
 appcfg.py -A peg-solitarie-backend-udacity -V v1 update .
 ```
 After deploying you can access the application in http://v1.peg-solitarie-backend-udacity.appspot.com/
 
+Change "peg-solitarie-backend-udacity" for your app engine application identification as needed.
+If you do, remember to update it in app.yaml as well.
+
 
 ### Run Game Logic tests
 ```
 python2 test_logic.py
 ```
+
+
+##Files Included:
+ - api.py: Contains endpoints.
+ - app.yaml: App configuration.
+ - cron.yaml: Cronjob configuration.
+ - main.py: Handler for cron jobs.
+ - models.py: Entity definitions including helper methods.
+ - rpc_messages.py: RPC Messages definitions.

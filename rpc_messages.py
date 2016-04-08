@@ -55,25 +55,31 @@ class GameMessage(messages.Message):
 
 
 class GamesMessage(messages.Message):
+    """ A group of game messages """
     games = messages.MessageField(GameMessage, 1, repeated=True)
 
 
 class GameKeyMessage(messages.Message):
+    """ urlsafe_key for a Game """
     game_key = messages.StringField(1, required=True)
 
 
 class GameHistoryMessage(messages.Message):
+    """ Movement history of a game """
     history = messages.StringField(1, repeated=True)
 
 
 class StringMessage(messages.Message):
+    """ Simple Message containing a String """
     message = messages.StringField(1, required=True)
 
 
 class UserMessage(messages.Message):
+    """ Message used to specify a username """
     user = messages.StringField(1, required=True)
 
 
 class NewUserMessage(messages.Message):
+    """ Message used for creating a new user """
     username = messages.StringField(1, required=True)
     email = messages.StringField(2, required=True)
