@@ -82,6 +82,7 @@ def make_move(current_state, move):
 
 
 def end_game(game_state):
+    ''' Ends the game, calculating the total score '''
     game_state.game_over = True
     game_state.score = calculate_score(game_state.board)
     game_state.ended_at = date.today()
@@ -123,6 +124,7 @@ def replace_char(string, char, position):
 
 
 def rest_one(board):
+    """ Returns True if there's only one peg left """
     peg_count = 0
     for line in board:
         for cell in line:
@@ -144,6 +146,7 @@ def calculate_score(board):
                 peg_count += 1
     score = INITIAL_PEG_COUNT - peg_count
     center_cell = board[3][3]
+    # A peg in the certer of the board gives 5 extra points
     if center_cell == '*':
         score += 5
     return score

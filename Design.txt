@@ -2,18 +2,18 @@
 # Additional properties for models
 
 In the Game model, due to the nature of the game, only _user_ and _game_over_ properties were kept.
-In Peg solitary the state of the game is mainly the description of pegs and their positions in the board.
+In Peg solitary the state of the game is mainly pegs and their positions in the board.
 The _board_ property is a list of strings that represent a 7x7 board state.
 Each char in a string can be one of 3 options:
 * - A peg
 o - A hole, where a peg can "land"
 (space) - Part of the board that is unusable
 
-The unusable empty spaces are used in certain edges to give the board the caracteristic shape 
+The unusable empty spaces are used in certain positions to give the board the caracteristic shape 
 of the Peg Solitarie game board.
 The _changed_at_ property is used to know when was the last move made by the player. With this informartion
 we can send a mail notification only users which haven't made a move in the last 12 hours.
-The _ended_at_ property is used to show in the leaderborad when a certain high scores was achieved.
+The _ended_at_ property is used to show in the leaderboard when each high score was achieved.
 _history_ is a list of strings describing the sequence of moves made to reach the current board state.
 The history is formed by a position in the board which contains a peg, and a letter representing the direction
 in which this peg is "jumping". Those are separeted by colon (:).
@@ -21,7 +21,7 @@ The _score_ property was used, instead of a _Score_ model, since it's natural th
 game has only one score, which is calculated on completion, and each score is related to a single game.
 
 The only property added to the _User_ model is _high_score_.
-This property will store the highest score a user has ever achieved.
+This property will store the highest score each user has ever achieved.
 With this information we are able to create a user ranking, sorted by higher achievers first.
 
 # Game Logic Considerations

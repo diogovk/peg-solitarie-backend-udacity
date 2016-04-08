@@ -1,4 +1,4 @@
 cron:
-- description: Remind users of "abandoned" games
+- description: Remind users of "abandoned" games (active games with no move for over 12 hours)
   url: /crons/notify_inactive_users
   schedule: every 12 hours

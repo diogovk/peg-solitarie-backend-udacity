@@ -89,7 +89,7 @@ class PegSolitarieAPI(remote.Service):
                       name="make_move",
                       http_method="PUT")
     def make_move(self, request):
-        """ Make move in the game, returning the new game """
+        """ Make move in the game, returning the new game state"""
         game = Game.get_from_key(urlsafe_key=request.game_key)
         if not game:
             raise endpoints.NotFoundException("The game could not be found")
@@ -170,6 +170,7 @@ class PegSolitarieAPI(remote.Service):
             raise endpoints.NotFoundException("The game could not be found")
         return game.to_historymessage()
 
+    # Transaction to keep user high score and game score consistent
     @ndb.transactional(xg=True)
     def commit_game_end(self, game):
         """
