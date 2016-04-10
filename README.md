@@ -74,3 +74,38 @@ python2 test_logic.py
  - main.py: Handler for cron jobs.
  - models.py: Entity definitions including helper methods.
  - rpc_messages.py: RPC Messages definitions.
+ - gamelogic.py: Game Logic functions.
+ - test_logic.py: Tests for game Logic
+
+##Endpoints Included:
+ - **create_user**
+    - Path: 'user'
+    - Method: POST
+    - Parameters: username, email (optional)
+    - Returns: Message confirming creation of the User.
+    - Description: Creates a new User. user_name provided must be unique. Will
+    raise a ConflictException if a User with that user_name already exists.
+
+ - **new_game**
+    - Path: 'game'
+    - Method: POST
+    - Parameters: username
+    - Returns: GameMessage with initial game state.
+    - Description: Creates a new Game. username provided must correspond to an
+    existing user - will raise a NotFoundException if not. 
+
+ - **get_game**
+    - Path: 'game/{game_key}'
+    - Method: GET
+    - Parameters: game_key
+    - Returns: GameMessage with current game state.
+    - Description: Returns the current state of a game.
+
+
+ - **make_move**
+    - Path: 'game/{game_key}'
+    - Method: PUT
+    - Parameters: game_key, origin_point, direction
+    - Returns: GameMessage with new game state.
+    - Description: Accepts a 'guess' and returns the updated state of the game.
+    If this causes a game to end, the score of the game will be calculated.

@@ -42,9 +42,9 @@ class PegSolitarieAPI(remote.Service):
     @endpoints.method(request_message=NewUserMessage,
                       response_message=StringMessage,
                       path="user",
-                      name="new_user",
+                      name="create_user",
                       http_method="POST")
-    def new_user(self, request):
+    def create_user(self, request):
         """ Creates a new user. Requires a unique username """
         if User.query(User.name == request.username).get():
             raise endpoints.ConflictException(
