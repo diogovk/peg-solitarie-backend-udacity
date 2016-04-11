@@ -20,8 +20,9 @@ BOARD_HTML_TEMPLATE = """
 <pre style="font-family: 'Courier New', Courier, monospace;">{}</pre>
 """
 
-SENDER='noreply@{}.appspotmail.com'.format(app_identity.get_application_id())
-REMINDER_SUBJECT="Please finish your game"
+SENDER = 'noreply@{}.appspotmail.com'.format(app_identity.get_application_id())
+REMINDER_SUBJECT = "Please finish your game"
+
 
 class NotifyInactiveUsers(webapp2.RequestHandler):
     def get(self):
