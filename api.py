@@ -17,7 +17,7 @@ class PegSolitarieAPI(remote.Service):
                       response_message=GameMessage,
                       path="new_game",
                       name="new_game",
-                      http_method='GET')
+                      http_method='POST')
     def new_game(self, request):
         """ Creates a new game """
         user = User.query(User.name == request.user).get()
