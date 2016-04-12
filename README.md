@@ -83,15 +83,15 @@ python2 test_logic.py
     - Method: POST
     - Parameters: username, email (optional)
     - Returns: Message confirming creation of the User.
-    - Description: Creates a new User. user_name provided must be unique. Will
-    raise a ConflictException if a User with that user_name already exists.
+    - Description: Creates a new User. username provided must be unique. Will
+    raise a ConflictException if a User with that username already exists.
 
  - **new_game**
     - Path: 'game'
     - Method: POST
-    - Parameters: username
+    - Parameters: user
     - Returns: GameMessage with initial game state.
-    - Description: Creates a new Game. username provided must correspond to an
+    - Description: Creates a new Game. user provided must correspond to an
     existing user - will raise a NotFoundException if not. 
 
  - **get_game**
@@ -101,11 +101,69 @@ python2 test_logic.py
     - Returns: GameMessage with current game state.
     - Description: Returns the current state of a game.
 
-
  - **make_move**
     - Path: 'game/{game_key}'
     - Method: PUT
     - Parameters: game_key, origin_point, direction
     - Returns: GameMessage with new game state.
-    - Description: Accepts a 'guess' and returns the updated state of the game.
-    If this causes a game to end, the score of the game will be calculated.
+    - Description: Move a peg in the board, if the movement is valid. game_key is the key of the game where the move should be made. origin_point is the position of the peg which will "jump" another peg. direction is the direction of the movement and can be 'up', 'down', 'left', 'right'. The game will be ended if there's only one peg left in the board.
+
+  - **get_user_games**
+     - Path: 'user/games'
+     - Method: GET
+     - Parameters: user
+     - Returns: GameMessages with the state of the active games.
+     - Description: Get all active games being played by the user
+
+  - **cancel_game**
+     - Path: 'game/{game_key}'
+     - Method: DELETE
+     - Parameters: game_key
+     - Returns: Message confirming game deletion
+     - Description: Delete a non-ended game.  Will raise NotFoundException if 
+     a game with game_key doesn't exist and raise BadRequestException if the 
+     requested game is already over.
+
+- **give_up**
+   - Path: 'give_up/{game_key}'
+   - Method: PUT
+   - Parameters: game_key
+   - Returns: Messsage confirming the game has ended
+   - Description: Gives up a game. The game with game_key will be ended and 
+   scores will be calculated. Will raise NotFoundException if game doesn't 
+   exist and BadRequestException if game is already over.
+
+- **get_high_scores**
+   - Path: 'leaderboard'
+   - Method: GET
+   - Parameters: number_of_results (optional)
+   - Returns: LeaderboardMessage containing the highest score games.
+   - Description: Gets a Leaderboard, the list of games with the highest 
+   recorded scores. If number_of_results is specified, at most number_of_results
+   entries will be returned.
+ 
+- **get_user_rankings**
+   - Path: 'user/ranking'
+   - Method: GET
+   - Parameters: None
+   - Returns: RankingMessage
+   - Description: A raking listing users with the highest recorded scores.
+
+- **get_game_history**
+   - Path: 'game/{game_key}/history'
+   - Method: GET
+   - Parameters: game_key
+   - Returns: GameHistoryMessage
+   - Description: Gets the movement history for a specific game.  Each 
+   moviement is composed of two fields separated by colon.  The first 
+   is the origin point in the board. The second is the direction which 
+   can be 'u', 'd', 'l', 'r' for 'up', 'down', 'left' and 'right' 
+   respectively.
+
+##Models Included:
+  - **User**
+    - Stores unique username and (optional) email address.
+
+  - **Game**
+    - Stores unique game states. Associated with User model via KeyProperty.
+
