@@ -9,6 +9,7 @@ The standard game fills the entire board with pegs except for the central hole. 
 A valid move is to jump a peg orthogonally over an adjacent peg into a hole two positions away and then to remove the jumped peg.
 
 This is what a peg solitarie board looks like:
+```
    a b c d e f g
  1     * * *
  2     * * *
@@ -17,6 +18,7 @@ This is what a peg solitarie board looks like:
  5 * * * * * * *
  6     * * *
  7     * * *
+```
 
 \* represents a peg, and o represents a hole.
 
