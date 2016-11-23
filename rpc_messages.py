@@ -11,7 +11,7 @@ class NumberOfResultsMessage(messages.Message):
 
 
 class UserHighScore(messages.Message):
-    """ A ranking entry, which is a user and it's highest score """
+    """ A ranking entry, which is a user and its highest score """
     username = messages.StringField(1, required=True)
     high_score = messages.IntegerField(2, required=True)
 
