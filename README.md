@@ -41,7 +41,7 @@ Google App Engine SDK for Python (google-appengine-python)
 ```
 dev_appserver.py .
 ```
-After that you'll be able to access your application in http://localhost:8080/_ah/api/explorer.
+After that you'll be able to access your application in http://localhost:8080/_ah/api/peg_solitarie/v1/.
 
 ### Exploring the API
 
