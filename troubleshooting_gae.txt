@@ -27,3 +27,11 @@ If python2 isn't the default in your system, make sure the header of GAE's scrip
 ```
 #!/usr/bin/env python2
 ```
+
+Make sure /opt/google-cloud-sdk/platform/google_appengine/appcfg.py is in a directory in your PATH:
+
+```
+cd ~/bin
+ln -s /opt/google-cloud-sdk/platform/google_appengine/appcfg.py
+```
+
