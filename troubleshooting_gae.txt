@@ -1,0 +1,29 @@
+
+
+If your python2 is not finding GAE's modules, edit /etc/profile.d/google-cloud-sdk.sh (or similar) with something like the following:
+```
+export CLOUDSDK_ROOT_DIR=/opt/google-cloud-sdk
+export CLOUDSDK_PYTHON=python2
+export CLOUDSDK_PYTHON_ARGS=-S
+export PATH=$CLOUDSDK_ROOT_DIR/bin:$PATH
+export GOOGLE_CLOUD_SDK_HOME=$CLOUDSDK_ROOT_DIR
+export GAE_SDK_ROOT="${CLOUDSDK_ROOT_DIR}/platform/google_appengine"
+
+export PYTHONPATH=${GAE_SDK_ROOT}:${PYTHONPATH}
+
+for module in ${GAE_SDK_ROOT}/lib/*; do
+  if [ -r ${module} ]; then
+    PYTHONPATH=${module}:${PYTHONPATH}
+  fi
+done
+unset module
+```
+
+
+If python2 isn't the default in your system, make sure the header of GAE's scripts point to it:
+
+/opt/google-cloud-sdk/bin/dev_appserver.py:
+
+```
+#!/usr/bin/env python2
+```

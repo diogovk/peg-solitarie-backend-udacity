@@ -47,9 +47,8 @@ After that you'll be able to access your application in http://localhost:8080/_a
 
 After starting the local server, open Chrome/Chromium with the following command line:
 ```
-chromium  --user-data-dir=test --unsafely-treat-insecure-origin-as-secure=http://localhost:8080
+google-chrome-stable  --user-data-dir=test --unsafely-treat-insecure-origin-as-secure=http://localhost:8080 http://localhost:8080/_ah/api/explorer
 ```
-Then access the api explorer with the following URL http://localhost:8080/_ah/api/explorer.
 
 
 
